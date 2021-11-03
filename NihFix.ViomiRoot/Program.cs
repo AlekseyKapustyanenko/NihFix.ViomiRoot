@@ -12,7 +12,9 @@ namespace NihFix.ViomiRoot
         static void Main(string[] args)
         {
             AdbServer server = new AdbServer();
-            var result = server.StartServer(@"F:\adb\platform-tools\adb.exe", restartServerIfNewer: true);
+            Console.Write("Please enter the path to ADB tool: ");
+            var adbPath = Console.ReadLine();
+            var result = server.StartServer(adbPath, restartServerIfNewer: true);
             var adbClient = new AdbClient();
             using var adbShellData = File.OpenRead(@"./adb_shell");
             Console.WriteLine("Root has been started");
@@ -49,7 +51,8 @@ namespace NihFix.ViomiRoot
         private static void Root(AdbClient client, Stream adbShellData)
         {
             var device = GetDevice(client);
-            //PushAdbShell(device,adbShellData);
+            PushAdbShell(device,adbShellData);
+            device = GetDevice(client);
             PersistAdbShell(device, client);
         }
 
